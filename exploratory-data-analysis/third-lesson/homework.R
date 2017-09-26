@@ -30,3 +30,34 @@ summary(dataset$DIF_EDAD)
 # Si la diferencia no está en ese intervalo cree una variable que se llame problema edad 
 # y que tome dos valores: “Sí” y “No”. “Sí” si sí está en el intervalo, 0 en caso contrario. 
 # ¿Cuántas observaciones tienen ese problema?
+
+dataset$PROBLEMA_EDAD <- ifelse(dataset$DIF_EDAD < -1 | dataset$DIF_EDAD > 1, "Si", "No")
+table(dataset$PROBLEMA_EDAD)
+
+#7. Elimine la opción NA de las variables que son factor
+
+#Funcion para falicitar la eliminacion de NA
+removerFactorNA <- function(dataset, nombreVariable){
+  isNALevel <- levels(dataset[,nombreVariable]) != ""
+  newLevels <- levels(dataset[,nombreVariable])[isNALevel]
+  
+  #recreate factor
+  dataset[,nombreVariable] <- factor(dataset[,nombreVariable], levels = newLevels)
+  return (dataset)
+}
+dataset <- removerFactorNA(dataset, "ESTU_PAIS_RESIDE")
+dataset <- removerFactorNA(dataset, "ESTU_GENERO")
+dataset <- removerFactorNA(dataset, "ESTU_RESIDE_MCPIO")
+dataset <- removerFactorNA(dataset, "ESTU_RESIDE_DEPTO")
+dataset <- removerFactorNA(dataset, "COLE_CALENDARIO")
+dataset <- removerFactorNA(dataset, "COLE_GENERO")
+dataset <- removerFactorNA(dataset, "COLE_NATURALEZA")
+dataset <- removerFactorNA(dataset, "COLE_JORNADA")
+dataset <- removerFactorNA(dataset, "COLE_CARACTER")
+dataset <- removerFactorNA(dataset, "ESTU_IES_MPIO_DESEADA")
+dataset <- removerFactorNA(dataset, "ESTU_IES_DEPT_DESEADA")
+dataset <- removerFactorNA(dataset, "DESEMP_INGLES")
+
+#8. ¿Cuántos valores perdidos hay en total?
+
+table(is.na(dataset))

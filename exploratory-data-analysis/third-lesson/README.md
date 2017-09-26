@@ -107,3 +107,7 @@ table(dataset$PROBLEMA_EDAD)
    No    Si 
 10962  1474 
 ```
+
+## Elimine la opción NA de las variables que son factor
+
+## ¿Cuántos valores perdidos hay en total?
