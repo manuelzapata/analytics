@@ -1,10 +1,32 @@
 #Hay un error en la linea 139, donde el numero de elementos no coincide. Por eso se usa el parametro "fill"
-dataset <- read.table("SB1120121.txt", sep = "|", fill = TRUE, header = TRUE)
+originalDataset <- read.table("SB1120121.txt", sep = "|", fill = TRUE, header = TRUE)
 
 #1. Obtener dimensiones de la base de datos.
 
-dim(dataset)
+dim(originalDataset)
 
 #2. Elimine las siguientes columnas: 10 a la 17, y de la 33 a la 75.
 
-dataset2 <- dataset[-10:-17]
+dataset <- originalDataset[-10:-17]
+dataset <- dataset[-33:-75]
+
+#3. Verifique las clases de las variables
+sapply(dataset, class)
+table(sapply(dataset, class))
+
+#4. Construya la variable fecha de nacimiento.
+dataset$FECHA_NACIMIENTO <- paste(dataset$ESTU_NACIMIENTO_DIA, dataset$ESTU_NACIMIENTO_MES, dataset$ESTU_NACIMIENTO_ANNO, sep = "-")
+dataset$FECHA_NACIMIENTO <- as.Date(dataset$FECHA_NACIMIENTO, format = "%d-%m-%Y")
+
+#5. ¿Corresponde la edad suministrada a la edad del individuo calculada, 
+# tomando la fecha en que se realizó el examen (15 de abril de 2012) y la fecha de nacimiento?
+
+fechaExamen <- as.Date("2012-04-15", format = "%Y-%m-%d")
+dataset$EDAD_CALCULADA <- round((difftime(fechaExamen, dataset$FECHA_NACIMIENTO, units = "weeks") / 52.25), 2)
+dataset$DIF_EDAD <- as.numeric(dataset$EDAD_CALCULADA - dataset$ESTU_EDAD)
+summary(dataset$DIF_EDAD)
+
+#6. Si la diferencia entre las edades esta entre -1 y 1 año, no hay problema. 
+# Si la diferencia no está en ese intervalo cree una variable que se llame problema edad 
+# y que tome dos valores: “Sí” y “No”. “Sí” si sí está en el intervalo, 0 en caso contrario. 
+# ¿Cuántas observaciones tienen ese problema?
