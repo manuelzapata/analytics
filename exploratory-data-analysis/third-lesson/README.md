@@ -103,7 +103,7 @@ dataset$PROBLEMA_EDAD <- ifelse(dataset$DIF_EDAD < -1 | dataset$DIF_EDAD > 1, "S
 table(dataset$PROBLEMA_EDAD)
 ```
 
-``text
+```text
    No    Si 
 10962  1474 
 ```
